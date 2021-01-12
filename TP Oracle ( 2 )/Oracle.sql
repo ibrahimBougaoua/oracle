@@ -5,6 +5,13 @@ revoke select on Seances from admingym;
 
 /****** Qst 8 *******/
 delete from DBAGYMNASE.Gymnases where IdGymnase not in (select IdGymnase from DBAGYMNASE.Seances);
+
+/*
+pour supprimer toutes les gymnases qui n’organisent pas de séances,
+Nous comparons donc deux tableaux gymnases et séances, s'il n'y a pas de relation entre eux,
+nous supprimons.
+*/
+
 /* ona pas le droit pour supprimer cette table ("Gymnases"). */
 /* Qst 9 */
 grant delete on Gymnases to admingym;
@@ -21,7 +28,7 @@ REVOKE SELECT ON Seances FROM admingym;
 REVOKE INDEX ON Sports FROM admingym;
 
 /* Qst 13 */
-SELECT * FROM USER_TAB_PRIVS;
+select privilege, admin_option from dba_sys_privs where grantee='admingym';
 
 /* Qst 14 */
 CREATE PROFILE Gymnase_Profil LIMIT 
@@ -40,7 +47,7 @@ CREATE PROFILE Gymnase_Profil LIMIT
 	
 /* Qst 15 */
 ALTER USER admingym PROFILE Gymnase_Profil;
-
+SELECT USERNAME,PROFILE,ACCOUNT_STATUS FROM DBA_USERS;
 /* Qst 16 */
 CREATE ROLE GESTIONNAIRE_DES_GYMNASES ;//IDENTIFIED BY psw;
 
@@ -63,7 +70,4 @@ GRANT ALTER ON Seances TO GESTIONNAIRE_DES_GYMNASES;
 /* Qst 17 */
 GRANT GESTIONNAIRE_DES_GYMNASES TO admingym;
 SET ROLE GESTIONNAIRE_DES_GYMNASES;//IDENTIFIED BY psw;
-select * from session_roles;
-select * from user_tab_privs;
-set linesize 150
-set pagesize 150
+select * from user_role_privs ;
