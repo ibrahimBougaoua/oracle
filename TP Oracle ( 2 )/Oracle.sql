@@ -11,7 +11,7 @@ grant delete on Gymnases to admingym;
 grant select on Seances to admingym;
 /* Qst 10 */
 /* on peut pas créer */
-CREATE INDEX LIBELLE_IX ON Sports(Libelle);
+CREATE INDEX LIBELLE_IX ON Sports('Libelle');
 /* Qst 11 */
 GRANT INDEX ON Sports TO admingym;
 CREATE INDEX LIBELLE_IX ON DBAGYMNASE.Sports(Libelle);
@@ -29,13 +29,13 @@ CREATE PROFILE Gymnase_Profil LIMIT
     CPU_PER_CALL 30
     CONNECT_TIME 70
     LOGICAL_READS_PER_SESSION 1300
-    PRIVATE_SGA 30
+    PRIVATE_SGA 3000
     IDLE_TIME 20
     FAILED_LOGIN_ATTEMPTS 3
+    PASSWORD_LOCK_TIME 3
     PASSWORD_LIFE_TIME 60
     PASSWORD_REUSE_TIME 40
     PASSWORD_REUSE_MAX UNLIMITED
-    PASSWORD_LOCK_TIME 3
     PASSWORD_GRACE_TIME 7;
 	
 /* Qst 15 */
