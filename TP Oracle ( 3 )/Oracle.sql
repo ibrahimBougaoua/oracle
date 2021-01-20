@@ -61,27 +61,30 @@ select CONSTRAINT_NAME,TABLE_NAME,CONSTRAINT_TYPE from USER_CONSTRAINTS;
 ---------------- 10 --------------------
 // Retrouver toutes les informations permettant de recréer la table SEANCES.
 
-
 ---------------- 11 --------------------
 // Trouver tous les privilèges accordés à ADMINGYM.
-select PRIVILEGE from USER_TAB_PRIVS where owner = 'ADMINGYM';
+connect ADMINGYM/psw;
+select PRIVILEGE from USER_TAB_PRIVS;
 
 ---------------- 12 --------------------
 // Trouver les rôles donnés à l’utilisateur ADMINGYM.
+connect ADMINGYM/psw;
 select * from user_role_privs;
 
 ---------------- 13 --------------------
 // Trouver tous les objets appartenant à ADMINGYM.
-select * from USER_OBJECTS;
+select object_name,object_type from USER_OBJECTS;
 
----------------- 14 --------------------
+---------------- 14 -------------------- 
 // L’administrateur cherche le propriétaire de la table SPORTIFS, comment il pourra le trouver ?
-select TABLE_OWNER from USER_SYNONYMS where TABLE_NAME = 'SPORTIFS'; 
+select owner from all_tables where table_name = 'SPORTIFS'; 
 
----------------- 15 --------------------
+---------------- 15 -------------------- *
 // Donner la taille en Ko de la table SPORTIFS.
-select BLOCKS from USER_TS_QUOTAS where TABLESPACE_NAME = 'SPORTIFS';
+select DISTINCT BLOCKS from USER_EXTENTS where TABLESPACE_NAME = 'SPORTIFS';
+select DISTINCT TABLESPACE_NAME from USER_EXTENTS;
+select bytes/1021 as "Taille en Mo" from user_tables where table_name = 'SPORTIFS';
 
----------------- 16 --------------------
+---------------- 16 -------------------- *
 // Vérifier l’effet produit par chacune des commandes de définition de données du TP1 sur le dictionnaire.
 
