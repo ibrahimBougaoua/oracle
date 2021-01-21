@@ -34,14 +34,14 @@ select username from user_users;
 
 ---------------- 5 --------------------
 // Vérifiez que les tables du TP1 ont été réellement créées ? Donner toutes les informations sur ces tables ?
-connect DBAGYMNASE/psw;
-select table_name from USER_TAB_COLUMNS;
-select table_name,COLUMN_NAME from USER_TAB_COLUMNS;
+select DISTINCT table_name from USER_TAB_COLUMNS;
+select table_name,COLUMN_NAME,data_type from USER_TAB_COLUMNS;
 
 ---------------- 6 --------------------
 // Lister les tables de l’utilisateur « system » et celles de l’utilisateur DBAGYMNASE (l’utilisateur de TP1).
 
-select table_name from ALL_TAB_COLUMNS where owner = 'system';
+connect system/root;
+select DISTINCT table_name from USER_TAB_COLUMNS;
 select DISTINCT table_name from ALL_TAB_COLUMNS where owner = 'DBAGYMNASE';
 
 ---------------- 7 --------------------
@@ -56,10 +56,11 @@ select CONSTRAINT_NAME,CONSTRAINT_TYPE from USER_CONSTRAINTS where table_name = 
 
 ---------------- 9 --------------------
 // Donner toutes les contraintes créées lors du TP1 et les informations qui les caractérisent (Exploitez la table USER_CONSTRAINTS).
-select CONSTRAINT_NAME,TABLE_NAME,CONSTRAINT_TYPE from USER_CONSTRAINTS;
+select * from USER_CONSTRAINTS;
 
 ---------------- 10 --------------------
 // Retrouver toutes les informations permettant de recréer la table SEANCES.
+select * from user_tab_columns where TABLE_NAME = 'SEANCES';
 
 ---------------- 11 --------------------
 // Trouver tous les privilèges accordés à ADMINGYM.
@@ -73,7 +74,7 @@ select * from user_role_privs;
 
 ---------------- 13 --------------------
 // Trouver tous les objets appartenant à ADMINGYM.
-select object_name,object_type from USER_OBJECTS;
+select * from USER_OBJECTS;
 
 ---------------- 14 -------------------- 
 // L’administrateur cherche le propriétaire de la table SPORTIFS, comment il pourra le trouver ?
@@ -82,11 +83,8 @@ select owner from all_tables where table_name = 'SPORTIFS';
 
 ---------------- 15 -------------------- *
 // Donner la taille en Ko de la table SPORTIFS.
-select DISTINCT BLOCKS from USER_EXTENTS where TABLESPACE_NAME = 'SPORTIFS';
-select DISTINCT TABLESPACE_NAME from USER_EXTENTS;
-select bytes as "Taille en Mo" from user_tables where table_name = 'SPORTIFS';
-
-select DISTINCT bytes,tablespace_name from USER_EXTENTS;
+connect DBAGYMNASE/psw;
+select segment_name,bytes/1024 kb from USER_EXTENTS where segment_name = 'SPORTIFS';
 
 ---------------- 16 -------------------- *
 // Vérifier l’effet produit par chacune des commandes de définition de données du TP1 sur le dictionnaire.
