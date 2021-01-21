@@ -63,8 +63,8 @@ select CONSTRAINT_NAME,TABLE_NAME,CONSTRAINT_TYPE from USER_CONSTRAINTS;
 
 ---------------- 11 --------------------
 // Trouver tous les privilèges accordés à ADMINGYM.
-connect ADMINGYM/psw;
-select PRIVILEGE from USER_TAB_PRIVS;
+connect DBAGYMNASE/psw;
+select TABLE_NAME,PRIVILEGE from USER_TAB_PRIVS where GRANTEE = 'ADMINGYM';
 
 ---------------- 12 --------------------
 // Trouver les rôles donnés à l’utilisateur ADMINGYM.
@@ -77,14 +77,30 @@ select object_name,object_type from USER_OBJECTS;
 
 ---------------- 14 -------------------- 
 // L’administrateur cherche le propriétaire de la table SPORTIFS, comment il pourra le trouver ?
+connect system/root;
 select owner from all_tables where table_name = 'SPORTIFS'; 
 
 ---------------- 15 -------------------- *
 // Donner la taille en Ko de la table SPORTIFS.
 select DISTINCT BLOCKS from USER_EXTENTS where TABLESPACE_NAME = 'SPORTIFS';
 select DISTINCT TABLESPACE_NAME from USER_EXTENTS;
-select bytes/1021 as "Taille en Mo" from user_tables where table_name = 'SPORTIFS';
+select bytes as "Taille en Mo" from user_tables where table_name = 'SPORTIFS';
+
+select DISTINCT bytes,tablespace_name from USER_EXTENTS;
 
 ---------------- 16 -------------------- *
 // Vérifier l’effet produit par chacune des commandes de définition de données du TP1 sur le dictionnaire.
+// create tablespace GYMNASE_TBS  datafile 'C:\tbs\GYMNASE_TBS.dat' size 100M autoextend on online;
+select DISTINCT TABLESPACE_NAME,BYTES from USER_EXTENTS where TABLESPACE_NAME = 'GYMNASE_TBS';
 
+// create user DBAGYMNASE identified by psw default tablespace GYMNASE_TBS temporary tablespace GYMNASE_TempTBS;
+select username,CREATED from all_users where username = 'DBAGYMNASE';
+
+// grant all privileges to DBAGYMNASE;
+select PRIVILEGE from USER_TAB_PRIVS where GRANTEE = 'DBAGYMNASE';
+
+// created tables.
+select DISTINCT table_name from ALL_TAB_COLUMNS where owner = 'DBAGYMNASE';
+
+// alter table GYMNASES add DATECREATION  date;
+select COLUMN_NAME from USER_TAB_COLUMNS where table_name = 'GYMNASES';
